@@ -61,9 +61,10 @@ def make_table(a,p,k_num,file,init_point=(3,10)):
         writer = csv.DictWriter(csv_file, fieldnames=columns)
 
         list_kP = [(0, None, init_point)]
-        # print(f'k={1}, lambda={None}, x3={None}, y3={None}, kP={init_point}')    
+        # print(f'k={1}, lambda={None}, x3={None}, y3={None}, kP={init_point}')
+        writer.writeheader()    
         writer.writerow({
-            'K': 0,
+            'K': 1,
             'Lambda': 'None',
             'x3': 'None',
             'y3': 'None',
