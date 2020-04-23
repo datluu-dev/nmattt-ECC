@@ -97,12 +97,12 @@ def make_table(a,p,k_num,file,init_point=(3,10)):
         return list_kP
 
 def main(a, b, p, file):
-    pl = get_point_lists(a, b, p)
+    # pl = get_point_lists(a, b, p)
     # print(f'Các điểm E({a}, {b}):')
     # for point in pl:
     #     print(point)
     # print('------------------')
-    k_num = len(pl)
+    k_num = 723
     random_init_point = (0,376)
     # random_init_point = pl[random.randint(0, len(pl))]
     # print('Bảng kP:')
