@@ -102,7 +102,7 @@ def main(a, b, p, file):
     # for point in pl:
     #     print(point)
     # print('------------------')
-    k_num = 723
+    k_num = 727
     random_init_point = (0,376)
     # random_init_point = pl[random.randint(0, len(pl))]
     # print('Bảng kP:')
