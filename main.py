@@ -2,6 +2,8 @@ from modularInverse import modularInverse as m_i
 from extendedGCD import extendedGCD as gcd
 import math
 import random
+import traceback
+import csv
 '''
 E(a,b) = X^3 + ax +b
 '''
@@ -53,34 +55,61 @@ def find_cyclic_point(P, Q, a, p):
     y3 = (lambda_val * (P[0]-x3) - P[1]) % p
     return (x3, y3), lambda_val
 
-def make_table(a,p,k_num,init_point=(3,10)):
-    list_kP = [(0, None, init_point)]
-    print(f'k={1}, lambda={None}, x3={None}, y3={None}, kP={init_point}')    
-    for k in range(2,k_num+1):
-        if (k==2):
-            last_point = init_point
-        cyclic_point, lambda_val = find_cyclic_point(init_point, last_point, a, p)
-        list_kP.append((k, lambda_val, cyclic_point))
-        last_point = cyclic_point
-        print(f'k={k}, lambda={lambda_val}, x3={cyclic_point[0]}, y3={cyclic_point[1]}, kP={cyclic_point}')
-    return list_kP
+def make_table(a,p,k_num,file,init_point=(3,10)):
+    with open(file, mode='w') as csv_file:
+        columns = ['K', 'Lambda', 'x3', 'y3', 'kP']
+        writer = csv.DictWriter(csv_file, fieldnames=columns)
 
-def main(a, b, p, k_num, file):
+        list_kP = [(0, None, init_point)]
+        # print(f'k={1}, lambda={None}, x3={None}, y3={None}, kP={init_point}')    
+        writer.writerow({
+            'K': 0,
+            'Lambda': 'None',
+            'x3': 'None',
+            'y3': 'None',
+            'kP': str(init_point)
+        })
+        for k in range(2,k_num+1):
+            if (k==2):
+                last_point = init_point
+            try:
+                cyclic_point, lambda_val = find_cyclic_point(init_point, last_point, a, p)
+                list_kP.append((k, lambda_val, cyclic_point))
+                last_point = cyclic_point
+                # print(f'k={k}, lambda={lambda_val}, x3={cyclic_point[0]}, y3={cyclic_point[1]}, kP={cyclic_point}')
+                writer.writerow({
+                    'K': k,
+                    'Lambda': lambda_val,
+                    'x3': cyclic_point[0],
+                    'y3': cyclic_point[1],
+                    'kP': str(init_point)
+                })
+            except Exception as e:
+                writer.writerow({
+                    'K': k,
+                    'Lambda': 'None',
+                    'x3': 'None',
+                    'y3': 'None',
+                    'kP': 0
+                })
+
+        return list_kP
+
+def main(a, b, p, file):
     pl = get_point_lists(a, b, p)
-    print(f'Các điểm E({a}, {b}):')
-    for point in pl:
-        print(point)
-    print('------------------')
-
-    random_init_point = (3,10)
+    # print(f'Các điểm E({a}, {b}):')
+    # for point in pl:
+    #     print(point)
+    # print('------------------')
+    k_num = len(pl)
+    random_init_point = (0,376)
     # random_init_point = pl[random.randint(0, len(pl))]
-    print('Bảng kP:')
-    make_table(a, p, k_num, random_init_point)
+    # print('Bảng kP:')
+    make_table(a, p, k_num, file,random_init_point)
 
 if __name__ == '__main__':
-    a = -1
-    b = 188 
+    a = -1  
+    b = 188
     p = 751
-    k_num = 769
-    file = ('kq.txt')
-    main(a, b, p, k_num, file)
+    file = ('out.csv')
+    main(a, b, p, file)
