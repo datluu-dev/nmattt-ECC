@@ -82,7 +82,7 @@ def make_table(a,p,k_num,file,init_point=(3,10)):
                     'Lambda': lambda_val,
                     'x3': cyclic_point[0],
                     'y3': cyclic_point[1],
-                    'kP': str(init_point)
+                    'kP': str(cyclic_point)
                 })
             except Exception as e:
                 writer.writerow({
